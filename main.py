@@ -6,8 +6,6 @@ import asyncio
 import json
 from dotenv import load_dotenv
 
-# print("🔧 TOOLS REGISTRADAS:", root_agent.tools)
-
 load_dotenv()
 
 APP_NAME = "real_estate_agent"
@@ -43,11 +41,6 @@ while True:
     )
 
     for event in events:
-        # DEBUG: Ver todos los eventos
-        print("EVENT TYPE:", type(event).__name__)
-        
-        if hasattr(event, 'tool_calls') and event.tool_calls:
-            print("🔧 TOOL CALL:", event.tool_calls)
         
         if event.is_final_response() and event.content:
             response_text = event.content.parts[0].text

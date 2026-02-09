@@ -55,13 +55,10 @@ def before_model_callback(callback_context: CallbackContext, llm_request: LlmReq
     """Runs before sending the request to the LLM. Hydrates the template"""
 
     phone_number = callback_context.state.get("user_id", None)
-    # print("DEBUG phone_number:", phone_number)  # ← AGREGAR
 
     crm_data = get_contact_context(phone_number)
-    # print("DEBUG crm_data:", crm_data)  # ← AGREGAR
 
     location_data = get_location_context()
-    # print("DEBUG location_data:", location_data)  # ← AGREGAR
 
 
     # GET BANT questions (or default config)

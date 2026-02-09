@@ -13,9 +13,6 @@ def health_check():
     """Endpoint de salud para verificar que el servidor está activo."""
     return {"status": "ok", "message": "Inbound Agent Core is running"}
 
-# Webhook para recibir mensajes de WhatsApp, es un handler POST que procesa los datos del formulario, funciona de la siguiente manera: primero extrae los campos From, To, Body, MessageSid y AccountSid del formulario enviado por Twilio. Luego imprime el mensaje recibido en la consola. Después, llama a la función run_agent para procesar el mensaje y obtener una respuesta del agente. A continuación, imprime la respuesta del agente en la consola y envía la respuesta de vuelta al usuario de WhatsApp utilizando la función send_whatsapp_message. Si el agente indica que se debe escalar la conversación a un humano, también imprime un mensaje de advertencia en la consola. Finalmente, devuelve un JSON con el estado de la operación, el mensaje enviado y si se debe escalar o no.
-
-# Basicamente un handler es una funcion que maneja una peticion HTTP, en este caso POST, y procesa los datos recibidos.
 @app.post("/webhook")
 async def webhook(
     From: str = Form(...),
@@ -32,12 +29,10 @@ async def webhook(
     
     print(f"📩 Mensaje recibido de {phone}: {message}")
     
-    # Ejecutar agente (ahora con await)
     response = await run_agent(phone, message)
     
     print(f"🤖 Respuesta del agente: {response['message']}")
     
-    # Enviar respuesta por WhatsApp
     result = send_whatsapp_message(to=From, body=response["message"])
     
     if response["should_escalate"]:
